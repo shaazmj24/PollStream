@@ -1,0 +1,52 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <title>Home Poll</title>
+        <style>  
+
+        body { 
+            height: 100vh; 
+            margin: 0;
+            display: flex; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }   
+
+        #buttons {  
+            position: relative; 
+            margin-top: 170px;
+            display: flex; 
+            gap: 46px; 
+        }
+
+        button { 
+            padding: 15px 47px;  
+            font-size: 23px;   
+            cursor: pointer;
+        }
+
+        button:hover { 
+            background-color: lightblue;
+        }
+
+        #h { 
+            position: relative;  
+            font-size: 65px; 
+            text-align: center; 
+            margin-top: -610px; 
+        }
+
+        </style>
+    </head>
+    <body> 
+        <h1 id="h">  
+            <span>Poll</span>
+            <span>Stream</span>
+        </h1>
+        <div id="buttons"> 
+            <button onclick="location.href='/create'">Create Poll</button>
+            <button onclick="location.href='/join'">Join Poll</button>
+        </div>
+    </body>
+</html>
