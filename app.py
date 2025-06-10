@@ -38,17 +38,20 @@ def join():
     if request.method == 'POST': 
         code_entered = request.form.get('code')
         if code_entered in Valid_code: 
-            return redirect(url_for('poll'))
+            return redirect(url_for('create_poll'))
         else: 
             return abort(404)
     return render_template('join.html') 
+
+@app.route('/create_poll')
+def create_poll(): 
+    return render_template('poll.html')
 
 
 if __name__ == '__main__':  
     app.run(debug=True)   
 
-
-   
+  
 
  
 
