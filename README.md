@@ -7,3 +7,10 @@ Tools:
 Python + Flask including SocketIO
 html/css + JS 
 Chart.js + boostrap 
+
+
+
+
+
+
+

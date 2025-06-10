@@ -1,6 +1,58 @@
 <!DOCTYPE html> 
 <html lang="en"> 
     <head> 
-        <title>Hello</title>
+        <title>CreatePoll</title>
     </head>
+    <style>    
+
+    body { 
+        height: 100vh;
+        display: flex; 
+        flex-direction: column;
+        
+    }
+
+    button { 
+        position: relative; 
+        display: flex; 
+        gap: 20px; 
+    }
+
+    button:hover { 
+        background-color: lightblue;
+    }
+    </style>
+    <body>    
+        <div> 
+            <h1>Create Poll</h1>
+        </div>  
+        <form method="POST" action="/create"> 
+            <input id="1" type="text" placeholder="Create Ques" name="ques"> 
+            <ol> 
+                <li> 
+                    <input id="2" type="text" placeholder="A" name="1"> 
+                </li> 
+                <li> 
+                    <input id="3" type="text" placeholder="B" name="2">  
+                </li>
+                <li>  
+                    <input id="4" type="text" placeholder="C" name="3"> 
+                </li>
+                <li>  
+                    <input id="5" type="text" placeholder="D" name="4"> 
+                </li>
+            </ol> 
+            <button type="submit">Create Poll</button>
+        </form>
+    </body>
 </html>
+
+
+
+
+
+
+
+
+
+
