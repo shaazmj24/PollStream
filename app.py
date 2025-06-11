@@ -35,18 +35,17 @@ def create():
  
 @app.route('/join', methods=['GET', 'POST'])
 def join(): 
-    Valid_code = ["abd", "123", "cc"]
     if request.method == 'POST': 
-        code_entered = request.form.get('code')
-        if code_entered in Valid_code: 
-            return redirect(url_for('create_poll'))
+        code_entered = request.form.get('code').upper()
+        if code_entered in polls: 
+            return redirect(url_for('view_poll', code=code_entered))
         else: 
             return abort(404)
     return render_template('join.html') 
 
-@app.route('/create_poll')
-def create_poll(): 
-    return render_template('poll.html')
+@app.route('/poll/<code>')
+def view_poll(code): 
+    return render_template('poll.html', code=poll_code)
 
 
 if __name__ == '__main__':  
@@ -55,4 +54,8 @@ if __name__ == '__main__':
   
 
  
+
+
+
+
 
