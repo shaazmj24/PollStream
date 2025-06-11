@@ -45,7 +45,7 @@ def join():
 
 @app.route('/poll/<code>')
 def view_poll(code): 
-    return render_template('poll.html', code=poll_code)
+    return render_template('poll.html', code=poll_code, infos=polls[code])
 
 
 if __name__ == '__main__':  
