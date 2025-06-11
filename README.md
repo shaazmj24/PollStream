@@ -11,6 +11,6 @@ Chart.js + boostrap
 
 
 
+voters will use the same link (admin), same flask server. 
 
-
-
+disploy app
