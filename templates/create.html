@@ -2,47 +2,31 @@
 <html lang="en"> 
     <head> 
         <title>CreatePoll</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='create1.css') }}">
     </head>
-    <style>    
-
-    body { 
-        height: 100vh;
-        display: flex; 
-        flex-direction: column; 
-    }
-
-    button { 
-        position: relative; 
-        display: flex; 
-        gap: 20px; 
-    }
-
-    button:hover { 
-        background-color: lightblue;
-    }
-    </style>
-    <body>    
-        <div> 
-            <h1>Create Poll</h1>
-        </div>  
+    <body>     
         <form method="POST" action="/create"> 
-            <input id="1" type="text" placeholder="Create Ques" name="ques"> 
-            <ol> 
-                <li> 
-                    <input id="2" type="text" placeholder="A" name="1"> 
-                </li> 
-                <li> 
-                    <input id="3" type="text" placeholder="B" name="2">  
-                </li>
-                <li>  
-                    <input id="4" type="text" placeholder="C" name="3"> 
-                </li>
-                <li>  
-                    <input id="5" type="text" placeholder="D" name="4"> 
-                </li>
-            </ol> 
+            <h1>CREATE POLL</h1>
+            <input id="one" type="text" placeholder="Create Question" name="ques"> 
+            <ul id="options">    
+            </ul> 
+            <input id="time" type="text" placeholder="Time in Seconds">
+            <button type="button" onclick="addOption()">+</button>
             <button type="submit">Create Poll</button>
         </form>
+        <script> 
+            function addOption() { 
+                const ul = document.getElementById('options'); 
+                const li = document.createElement('li');
+                li.innerHTML = ' <input type="text" name="option"> <button type="button" onclick="removeOption(this)">-</button> '; 
+                ul.appendChild(li)
+            }
+
+            function removeOption(button) {  
+                const li = button.parentElement;
+                li.remove(); 
+            }
+        </script>
     </body>
 </html>
 

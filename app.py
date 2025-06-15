@@ -20,7 +20,7 @@ def generate_code():
 def create(): 
     if request.method == 'POST': 
         question = request.form.get('ques') 
-        options = [request.form.get(str(i)) for i in range(1, 5)] 
+        options = [request.form.get(str(i)) for i in range(1, 5)]
         options = [op for op in options if op]              #if op returns actual value otherwie none  
         poll_code = generate_code()
         while poll_code in polls: 
@@ -59,3 +59,4 @@ if __name__ == '__main__':
 
 
 
+ 
