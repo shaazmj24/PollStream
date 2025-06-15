@@ -14,3 +14,15 @@ Chart.js + boostrap
 voters will use the same link (admin), same flask server. 
 
 disploy app
+
+
+
+
+<h1 id="h">  
+            <span>Poll</span>
+            <span>Stream</span>
+        </h1>
+        <div id="buttons"> 
+            <button onclick="location.href='/create'">Create Poll</button>
+            <button onclick="location.href='/join'">Join Poll</button>
+        </div>

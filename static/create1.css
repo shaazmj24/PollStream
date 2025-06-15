@@ -77,3 +77,13 @@ body {
     margin-top: 10px;
   }
 
+  #cp {  
+    position: relative;
+    left: 200px; 
+  }
+
+  #plus { 
+    position: relative;
+    left: 197px;
+  }
+

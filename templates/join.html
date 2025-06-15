@@ -10,7 +10,16 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            background-color: lightblue;
         }   
+
+        form { 
+            background-color: white;
+            padding: 25px 30px;
+            border-radius: 27px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 550px;
+        }
 
         #i { 
             height: 40px; 
@@ -18,21 +27,34 @@
             font-size: 20px;
         }
 
-        #b { 
+        button { 
             position: relative; 
-            top: 20px; 
-            font-size: 20px; 
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            right: -200px; 
         }
 
         button:hover { 
             background-color: lightblue; 
         }
 
+        #heading { 
+            position: relative;
+            top: -20px; 
+            font-style: oblique;
+        }
+
         </style>
     </head>
     <body>   
         <form method="POST" action="/join">
-            <input id="i" type="text" placeholder="Enter Code" name="code"> 
+            <h1 id="heading">ENTER CODE</h1>
+            <input id="i" type="text" placeholder="Type Code" name="code"> 
             <button id="b" type="sumbit">ENTER</button>
         </form>
     </body>
