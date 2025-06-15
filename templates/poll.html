@@ -7,9 +7,9 @@
 
     </style>
     <body> 
-        <h1>{{ code[ques] }}</h1>   
+        <h1>{{ code["ques"] }}</h1>   
         <form method="POST"> 
-            {% for option in code[options] %}  
+            {% for option in code["options"] %}  
             <input type="radio" value="{{loop.index0}}" name="vote">  
             {{ option }} <br> 
             {% endfor %}
