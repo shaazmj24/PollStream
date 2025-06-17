@@ -15,11 +15,17 @@
             <button id="cp" type="submit">Create Poll</button>
         </form>
         <script> 
+            let count = 0; 
+            let num = 1; 
             function addOption() { 
                 const ul = document.getElementById('options'); 
                 const li = document.createElement('li');
-                li.innerHTML = ' <input type="text" name="option"> <button type="button" onclick="removeOption(this)">x</button> '; 
+                const letter = String.fromCharCode(65 + count)
+                li.innerHTML = ` <input id="${num}" type="text" placeholder="${letter}" name="option">  
+                                 <button type="button" onclick="removeOption(this)">x</button> `; 
                 ul.appendChild(li)
+                count += 1
+                num += 1
             }
 
             function removeOption(button) {  

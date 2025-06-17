@@ -71,6 +71,7 @@ body {
   button[type="submit"]:hover,
   button[type="button"]:hover {
     background-color: lightblue;
+    color: black
   }
   
   button[type="button"] {

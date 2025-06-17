@@ -30,7 +30,7 @@ def create():
             "ques": question, 
             "options": options, 
         }  
-        return poll_code
+        return render_template('code.html', poll_code=poll_code)
     return render_template('create.html') 
  
 @app.route('/join', methods=['GET', 'POST'])

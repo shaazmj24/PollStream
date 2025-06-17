@@ -1,0 +1,48 @@
+<!DOCTYPE html> 
+<html lang="en">  
+    <head> 
+        <title>Pin</title>
+    </head>
+    <style>   
+    body { 
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 40px;
+        background-color: white;
+    }
+
+    form {  
+        position: relative; 
+        background-color: lightblue; 
+        padding: 25px 30px;
+        border-radius: 27px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        width: 550px;
+        bottom: -250px; 
+    }
+
+    button { 
+        background-color: black;
+        color: white;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    button:hover { 
+        background-color: white;
+        color: black
+    }
+
+    </style>
+    <body>
+        <form method="POST" action="/livechart"> 
+            <h2>CODE: {{ poll_code }}</h2>
+            <h3 id="hed3">Guide: Share this code with voters so they can join the poll</h3>
+            <button type="submit">Show LiveChart</button>
+        </form>
+    </body>
+</html>
+
+
