@@ -19,15 +19,16 @@ def generate_code():
 @app.route('/create', methods=['POST', 'GET']) 
 def create(): 
     if request.method == 'POST': 
+        time = request.form.get('time')
         question = request.form.get('ques') 
-        options = [request.form.get(str(i)) for i in range(1, 5)]
-        options = [op for op in options if op]              #if op returns actual value otherwie none  
+        options = [request.form.get(letter) for letter in string.ascii_uppercase if request.form.get(letter)]   #if op returns actual value otherwie none  
         poll_code = generate_code()
         while poll_code in polls: 
             poll_code = generate_code()
         
         polls[poll_code] = { 
             "ques": question, 
+            "time": time, 
             "options": options, 
         }  
         return render_template('code.html', poll_code=poll_code)
