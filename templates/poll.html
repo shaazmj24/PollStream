@@ -3,12 +3,50 @@
     <head> 
         <title>Poll Time</title>
     </head> 
-    <style> 
+    <style>  
+    body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    background-color: lightblue; }
+  
+  form {
+    position: relative; 
+    background-color: white;
+    padding: 25px 30px;
+    border-radius: 27px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 1000px; 
+    height: 200px;
+    top: 100px;
+  }
+
+  #heading1 { 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+  }
+
+  button { 
+    position: relative; 
+    background-color: black;
+    color: white; 
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    top: 54px; 
+  }
+
+  button:hover {  
+    background-color: lightblue;
+    color: black; 
+  }
 
     </style>
-    <body> 
-        <h1>{{ code["ques"] }}</h1>   
-        <form method="POST"> 
+    <body>   
+        <form method="POST">   
+            <h1>Q: {{ code["ques"] }}</h1> 
             {% for option in code["options"] %}  
             <input type="radio" value="{{loop.index0}}" name="vote">  
             {{ option }} <br> 
