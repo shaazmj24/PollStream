@@ -46,11 +46,16 @@
     </style>
     <body>   
         <form method="POST">   
-            <h1>Q: {{ code["ques"] }}</h1> 
-            {% for option in code["options"] %}  
-            <input type="radio" value="{{loop.index0}}" name="vote">  
-            {{ option }} <br> 
-            {% endfor %}
+            <h1>Q: {{ code["ques"] }}</h1>  
+            <div class="options"> 
+                {% for option in code["options"] %}
+                   <label class="class-op"> 
+                    <input type="radio" value="{{ loop.index0 }}" name="vote"> 
+                    <span>{{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[loop.index0] }}</span>
+                   </label>
+                {% end for %}
+            </div>
+            <br>
             <button type="submit">Submit</button>
         </form>
     </body>

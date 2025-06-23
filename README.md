@@ -26,3 +26,9 @@ disploy app
             <button onclick="location.href='/create'">Create Poll</button>
             <button onclick="location.href='/join'">Join Poll</button>
         </div>
+
+
+{% for option in code["options"] %}  
+            <input type="radio" value="{{loop.index0}}" name="vote">  
+            {{ option }} <br> 
+            {% endfor %}
