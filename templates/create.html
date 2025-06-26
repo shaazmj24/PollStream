@@ -22,8 +22,8 @@
                 const letter = String.fromCharCode(65 + count)
                 li.innerHTML = ` <input type="text" placeholder="${letter}" name="${letter}">  
                                  <button type="button" onclick="removeOption(this)">x</button> `; 
-                ul.appendChild(li)
-                count += 1
+                ul.appendChild(li); 
+                count += 1; 
             }
 
             function removeOption(button) {  

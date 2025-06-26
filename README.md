@@ -32,3 +32,25 @@ disploy app
             <input type="radio" value="{{loop.index0}}" name="vote">  
             {{ option }} <br> 
             {% endfor %}
+
+
+
+button { 
+    position: relative; 
+    background-color: black;
+    color: white; 
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    top: 54px; 
+  }
+
+
+{% for option in code["options"] %}  
+            <label id="cl" class="option"> 
+                <input type="radio" value="{{loop.index0}}" name="vote"> 
+                <span class="circle">A</span> {{ option }} 
+            </label>  
+            {% endfor %} 
