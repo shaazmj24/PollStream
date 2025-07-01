@@ -4,6 +4,7 @@ from flask import abort
 import random 
 import string 
 import json 
+import time
 
 app = Flask(__name__)
 polls = {} 
@@ -46,13 +47,13 @@ def join():
 
 @app.route('/poll/<code>')
 def view_poll(code): 
-    return render_template('poll.html', code=polls[code], id=code)
+    return render_template('poll.html', code=polls[code], timer=polls[code]["time"])
 
 
 if __name__ == '__main__':  
     app.run(debug=True)   
 
-  
+
 
  
 

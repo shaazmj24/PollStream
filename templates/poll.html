@@ -65,11 +65,14 @@
 
     <body>   
         <form method="POST">   
+            <span>Timer: </span>
+            <span id="timeleft"></span>
+            <span id="timer">{{ code["time"] }}</span>
             <p style="font-size: 40px;">{{ code["ques"] }}</p>   
             {% for option in code["options"] %}  
             <label class="option">    
                 <input type="radio" name="vote">
-                <span class="circle">A</span>
+                <span class="circle"></span>
                 {{ option }} 
             </label>  
             {% endfor %} 
@@ -81,6 +84,19 @@
                 const letter = String.fromCharCode(65 + index);
                 circle.textContent = letter; 
             });
+
+            let timeCounter = parseInt(document.getElementById("timer").textContent); 
+
+            const timer = setInterval(() => { 
+                const displayTime = timeCounter; 
+                document.getElementById("timer").textContent = displayTime; 
+
+                timerCounter--; 
+
+                if (timeCounter < 0) { 
+                    clearInterval(timer); 
+                }
+            }, 1000); 
         </script>
     </body>
 </html>
