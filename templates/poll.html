@@ -61,12 +61,21 @@
     input[type="radio"] {
       display: none;
     }
-    </style>
 
+    #timer {   
+        position: absolute;  
+        right: 20px;
+    }
+
+    #Tim { 
+        position: absolute;  
+        right: 49px;
+    }
+
+    </style>
     <body>   
         <form method="POST">   
-            <span>Timer: </span>
-            <span id="timeleft"></span>
+            <span id="Tim">Timer: </span>
             <span id="timer">{{ code["time"] }}</span>
             <p style="font-size: 40px;">{{ code["ques"] }}</p>   
             {% for option in code["options"] %}  
@@ -79,24 +88,23 @@
         </form>
         <script>  
             const circles = document.querySelectorAll('.circle'); 
-            
             circles.forEach((circle, index) => { 
                 const letter = String.fromCharCode(65 + index);
                 circle.textContent = letter; 
             });
+        </script>
+        <script> 
+            let timeCounter = parseInt(document.getElementById("timer").textContent);   
 
-            let timeCounter = parseInt(document.getElementById("timer").textContent); 
+            const interval = setInterval(function() {     
+                document.getElementById("timer").textContent = timeCounter + "s"; 
+                timeCounter--; 
 
-            const timer = setInterval(() => { 
-                const displayTime = timeCounter; 
-                document.getElementById("timer").textContent = displayTime; 
-
-                timerCounter--; 
-
-                if (timeCounter < 0) { 
-                    clearInterval(timer); 
+                if (timeCounter < 0) {  
+                    clearInterval(interval)
+                    document.getElementById("timer").textContent = "Time's up."
                 }
-            }, 1000); 
+            }, 1000)
         </script>
     </body>
 </html>
