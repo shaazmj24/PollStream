@@ -70,6 +70,18 @@
     #Tim { 
         position: absolute;  
         right: 49px;
+    } 
+
+    #rs { 
+        position: relative; 
+        background-color: black; 
+        color: white; 
+        border: none; 
+        padding: 10px 15px; 
+        font-size: 16px; 
+        border-radius: 6px; 
+        cursor: pointer;
+        float: right;      
     }
 
     </style>
@@ -85,6 +97,7 @@
                 {{ option }} 
             </label>  
             {% endfor %} 
+            
         </form>
         <script>  
             const circles = document.querySelectorAll('.circle'); 
@@ -103,11 +116,18 @@
                 if (timeCounter < 0) {  
                     clearInterval(interval)
                     document.getElementById("timer").textContent = "Time's up."
+                    const rs = document.createElement("div");  
+                    rs.innerHTML = `<button id="rs" type="submit">Show Result</button>` 
+                    document.querySelector("form").appendChild(rs); 
                 }
             }, 1000)
         </script>
     </body>
 </html>
+
+
+
+
 
 
 
