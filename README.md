@@ -54,3 +54,8 @@ button {
                 <span class="circle">A</span> {{ option }} 
             </label>  
             {% endfor %} 
+
+
+@app.route('/chart', method=['POST', 'GET'])
+def chart(): 
+    return "stub"

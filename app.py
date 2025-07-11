@@ -47,7 +47,13 @@ def join():
 
 @app.route('/poll/<code>')
 def view_poll(code): 
-    return render_template('poll.html', code=polls[code], timer=polls[code]["time"])
+    return render_template('poll.html', code=polls[code], timer=polls[code]["time"])  
+
+@app.route('/result', methods=['POST']) 
+def chart():   
+    selected = request.form.get('vote')  
+    choice = request.form.get('op')
+    return render_template('chart.html', selected=selected, choice=choice)
 
 
 if __name__ == '__main__':  

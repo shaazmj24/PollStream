@@ -65,11 +65,14 @@
     #timer {   
         position: absolute;  
         right: 20px;
+        top: 30px;
+        font-size: 20px;
     }
 
     #Tim { 
         position: absolute;  
         right: 49px;
+        font-size: 25px;
     } 
 
     #rs { 
@@ -86,18 +89,17 @@
 
     </style>
     <body>   
-        <form method="POST">   
+        <form method="POST" action="/result">   
             <span id="Tim">Timer: </span>
             <span id="timer">{{ code["time"] }}</span>
             <p style="font-size: 40px;">{{ code["ques"] }}</p>   
             {% for option in code["options"] %}  
             <label class="option">    
-                <input type="radio" name="vote">
-                <span class="circle"></span>
+                <input type="radio" name="vote" value="{{option}}">
+                <span class="circle" name="op"></span>
                 {{ option }} 
             </label>  
             {% endfor %} 
-            
         </form>
         <script>  
             const circles = document.querySelectorAll('.circle'); 
@@ -109,13 +111,13 @@
         <script> 
             let timeCounter = parseInt(document.getElementById("timer").textContent);   
 
-            const interval = setInterval(function() {     
-                document.getElementById("timer").textContent = timeCounter + "s"; 
+            const interval = setInterval(function() {     // interval varaibe only if you want to stop countdown so clearInterval(variable)
+                document.getElementById("timer").textContent = timeCounter; 
                 timeCounter--; 
 
                 if (timeCounter < 0) {  
                     clearInterval(interval)
-                    document.getElementById("timer").textContent = "Time's up."
+                    document.getElementById("Tim").textContent = "Time's up:"
                     const rs = document.createElement("div");  
                     rs.innerHTML = `<button id="rs" type="submit">Show Result</button>` 
                     document.querySelector("form").appendChild(rs); 
@@ -124,10 +126,6 @@
         </script>
     </body>
 </html>
-
-
-
-
 
 
 
