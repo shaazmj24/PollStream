@@ -89,7 +89,7 @@
 
     </style>
     <body>   
-        <form method="POST" action="/result">   
+        <form id="myform" method="POST" action="/result">   
             <span id="Tim">Timer: </span>
             <span id="timer">{{ code["time"] }}</span>
             <p style="font-size: 40px;">{{ code["ques"] }}</p>   
@@ -117,10 +117,12 @@
 
                 if (timeCounter < 0) {  
                     clearInterval(interval)
-                    document.getElementById("Tim").textContent = "Time's up:"
+                    document.getElementById("Tim").textContent = "Time's up:"   
                     const rs = document.createElement("div");  
-                    rs.innerHTML = `<button id="rs" type="submit">Show Result</button>` 
+                    rs.innerHTML = `<button id="rs" type="submit">Show Result</button>`   
                     document.querySelector("form").appendChild(rs); 
+                    const radios = document.querySelectorAll("vote"); 
+                    radios.forEach(radio => radio.disabled = true)
                 }
             }, 1000)
         </script>
