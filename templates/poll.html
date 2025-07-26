@@ -117,12 +117,24 @@
 
                 if (timeCounter < 0) {  
                     clearInterval(interval)
-                    document.getElementById("Tim").textContent = "Time's up:"   
+                    document.getElementById("Tim").textContent = "Time's up:"  
+
+                    //get selected radio value
+                    const selected = document.querySelector('input[name="vote"]:checked'); 
+                    const selectedValue = selected ? selected.value : ""; 
+
+                    //create hidden input to preserve the value and allow post action  
+                    const hiddeninput = document.createElement("input");  
+                    hiddeninput.type = "hidden"; 
+                    hiddeninput.name = "vote"; 
+                    hiddeninput.value = selectedValue; 
+                    document.querySelector("form").appendChild(hiddeninput); 
+
                     const rs = document.createElement("div");  
                     rs.innerHTML = `<button id="rs" type="submit">Show Result</button>`   
                     document.querySelector("form").appendChild(rs); 
-                    const radios = document.querySelectorAll("vote"); 
-                    radios.forEach(radio => radio.disabled = true)
+                    const radios = document.querySelectorAll('input[type="radio"]'); 
+                    radios.forEach(radio => radio.disabled = true); 
                 }
             }, 1000)
         </script>
