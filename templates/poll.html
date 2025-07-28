@@ -87,16 +87,22 @@
         float: right;      
     }
 
+    #ques { 
+        position: relative; 
+        font-size: 40px;     
+        font-weight: bold;
+    }
+
     </style>
     <body>   
         <form id="myform" method="POST" action="/result">   
             <span id="Tim">Timer: </span>
             <span id="timer">{{ code["time"] }}</span>
-            <p style="font-size: 40px;">{{ code["ques"] }}</p>   
+            <p id="ques">{{ code["ques"] }}</p>   
             {% for option in code["options"] %}  
             <label class="option">    
-                <input type="radio" name="vote" value="{{option}}">
-                <span class="circle" name="op"></span>
+                <input type="radio" name="vote" value="{{option}}&{{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[loop.index0] }}"> 
+                <span class="circle"></span>
                 {{ option }} 
             </label>  
             {% endfor %} 
@@ -121,14 +127,14 @@
 
                     //get selected radio value
                     const selected = document.querySelector('input[name="vote"]:checked'); 
-                    const selectedValue = selected ? selected.value : ""; 
+                    const selectedValue = selected ? selected.value : "none"; 
 
-                    //create hidden input to preserve the value and allow post action  
+                    //create hidden input to preserve the value and allow post action or submission (always input)
                     const hiddeninput = document.createElement("input");  
                     hiddeninput.type = "hidden"; 
-                    hiddeninput.name = "vote"; 
+                    hiddeninput.name = "v"; 
                     hiddeninput.value = selectedValue; 
-                    document.querySelector("form").appendChild(hiddeninput); 
+                    document.querySelector("form").appendChild(hiddeninput);  
 
                     const rs = document.createElement("div");  
                     rs.innerHTML = `<button id="rs" type="submit">Show Result</button>`   

@@ -38,11 +38,12 @@ def create():
 @app.route('/join', methods=['GET', 'POST'])
 def join(): 
     if request.method == 'POST': 
-        code_entered = request.form.get('code').upper()
+        code_entered = request.form.get('code').upper().strip()
         if code_entered in polls: 
             return redirect(url_for('view_poll', code=code_entered))
         else: 
-            return abort(404)
+            return abort(404) 
+    
     return render_template('join.html') 
 
 @app.route('/poll/<code>')
@@ -50,9 +51,12 @@ def view_poll(code):
     return render_template('poll.html', code=polls[code], timer=polls[code]["time"])  
 
 @app.route('/result', methods=['POST']) 
-def chart():   
-    selected = request.form.get('vote')  
-    choice = request.form.get('op')
+def chart():  
+    option = request.form.get('v')
+    if (option == "none"):  
+        choice, selected = None, None
+    else:  
+        choice, selected = option.split("&")
     return render_template('chart.html', selected=selected, choice=choice)
 
 
