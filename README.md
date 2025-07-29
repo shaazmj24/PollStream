@@ -59,3 +59,27 @@ button {
 @app.route('/chart', method=['POST', 'GET'])
 def chart(): 
     return "stub"
+
+
+
+<!DOCTYPE html>
+<html lang="en">  
+    <head>
+        <title>Chart</title>
+    </head>
+    <body> 
+        <script>scr="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"</script>
+        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+        <script>   
+            const myChart = new Chart("myChart", { 
+                type: "bar", 
+                data: {}, 
+                options: {} 
+            });
+        </script>
+        <h1> 
+            {{ selected }}
+            {{choice}}
+        </h1>
+    </body>
+</html>
