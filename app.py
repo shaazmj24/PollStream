@@ -52,16 +52,24 @@ def view_poll(code):
 
 @app.route('/result', methods=['POST']) 
 def chart():  
+    choice_map = {}
     option = request.form.get('v')
     if (option == "none"):  
         choice, selected = None, None
     else:  
-        choice, selected = option.split("&")
-    return render_template('chart.html', selected=selected, choice=choice)
+        selected, choice = option.split("&")
+        if choice in choice_map:  
+            choice_map[choice] += 1
+        else: 
+            choice_map[choice] = 1
+    
+    key_choices = list(choice_map.keys())
+    nofchoices = list(choice_map.values())
+    return render_template('chart.html', selected=selected, choice=choice, key_choices=key_choices, nofchoices=nofchoices)
 
 
 if __name__ == '__main__':  
-    app.run(debug=True)   
+    app.run(host='0.0.0.0', port=5001, debug=True)   
 
 
 

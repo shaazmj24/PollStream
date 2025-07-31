@@ -71,3 +71,47 @@ def chart():
 
 if __name__ == '__main__':  
     app.run(debug=True)   
+
+
+
+
+
+
+
+chart file: 
+
+
+
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<body>
+
+<canvas id="myChart" style="width:500%;max-width:2000px"></canvas>
+
+<script>
+var xValues = ["A", "B", "C", "D", "E"];
+var yValues = [55, 50, 24, 90, 30];
+var barColors = ["cyan", "cyan","cyan","cyan","cyan"];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Vote"
+    }
+  }
+});
+</script>
+
+</body>
+</html>
