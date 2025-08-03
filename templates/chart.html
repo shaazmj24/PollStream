@@ -8,7 +8,7 @@
 <script>
 var xValues = JSON.parse('{{ key_choices | tojson | safe }}'); 
 var yValues = JSON.parse('{{nofchoices | tojson }}'); 
-var barColors = ["cyan", "cyan"];
+var barColors = Array(xValues.length).fill("cyan");
 
 new Chart("myChart", {
   type: "bar",

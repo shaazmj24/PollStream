@@ -115,3 +115,260 @@ new Chart("myChart", {
 
 </body>
 </html>
+
+
+
+
+
+voters will use the same link (admin), same flask server. 
+
+disploy app
+
+
+
+
+<h1 id="h">  
+            <span>Poll</span>
+            <span>Stream</span>
+        </h1>
+        <div id="buttons"> 
+            <button onclick="location.href='/create'">Create Poll</button>
+            <button onclick="location.href='/join'">Join Poll</button>
+        </div>
+
+
+{% for option in code["options"] %}  
+            <input type="radio" value="{{loop.index0}}" name="vote">  
+            {{ option }} <br> 
+            {% endfor %}
+
+
+
+button { 
+    position: relative; 
+    background-color: black;
+    color: white; 
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    top: 54px; 
+  }
+
+
+{% for option in code["options"] %}  
+            <label id="cl" class="option"> 
+                <input type="radio" value="{{loop.index0}}" name="vote"> 
+                <span class="circle">A</span> {{ option }} 
+            </label>  
+            {% endfor %} 
+
+
+@app.route('/chart', method=['POST', 'GET'])
+def chart(): 
+    return "stub"
+
+
+
+<!DOCTYPE html>
+<html lang="en">  
+    <head>
+        <title>Chart</title>
+    </head>
+    <body> 
+        <script>scr="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"</script>
+        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+        <script>   
+            const myChart = new Chart("myChart", { 
+                type: "bar", 
+                data: {}, 
+                options: {} 
+            });
+        </script>
+        <h1> 
+            {{ selected }}
+            {{choice}}
+        </h1>
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html> 
+<html lang="eng"> 
+    <head> 
+        <title>Poll Time</title>
+    </head> 
+    <style>   
+    
+    body { 
+        font-family: Arial, sans-serif; 
+        display: flex; 
+        justify-content: center; 
+        padding: 40px; 
+        background-color: lightblue; 
+    } 
+    
+    form { 
+        position: relative;  
+        background-color: white; 
+        padding: 25px 30px; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        width: 1500px;  
+        height: 600px; 
+        top: 40px; 
+    } 
+    
+    button:hover {   
+        background-color: lightblue; 
+        color: black;  
+    } 
+    
+    input[type="radio"] {     
+        transform: scale(3.1); 
+    }
+
+    input[type="radio"]:checked + .circle {
+      background-color: lightblue;
+      color: black;
+      border-color: lightblue;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 22px;
+      cursor: pointer;
+    }
+
+    .circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      margin-right: 12px;
+      transition: all 0.2s ease;
+    } 
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    #timer {   
+        position: absolute;  
+        right: 20px;
+        top: 30px;
+        font-size: 20px;
+    }
+
+    #Tim { 
+        position: absolute;  
+        right: 49px;
+        font-size: 25px;
+    } 
+
+    #rs { 
+        position: relative; 
+        background-color: black; 
+        color: white; 
+        border: none; 
+        padding: 10px 15px; 
+        font-size: 16px; 
+        border-radius: 6px; 
+        cursor: pointer;
+        float: right;      
+    }
+
+    #ques { 
+        position: relative; 
+        font-size: 40px;     
+        font-weight: bold;
+    }
+
+    </style>
+    <body>   
+        <form id="myform">   
+            <span id="Tim">Timer: </span>
+            <span id="timer">{{ code["time"] }}</span>
+            <p id="ques">{{ code["ques"] }}</p>   
+            {% for option in code["options"] %}  
+            <label class="option">    
+                <input type="radio" name="vote" value="{{option}}&{{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[loop.index0] }}"> 
+                <span class="circle"></span>
+                {{ option }} 
+            </label>  
+            {% endfor %} 
+        </form>
+        <script>  
+            const circles = document.querySelectorAll('.circle'); 
+            circles.forEach((circle, index) => { 
+                const letter = String.fromCharCode(65 + index);
+                circle.textContent = letter; 
+            });
+        </script>
+        <script> 
+            let timeCounter = parseInt(document.getElementById("timer").textContent);   
+
+            const interval = setInterval(function() {   // interval varaibe only if you want to stop countdown so clearInterval(variable)
+                document.getElementById("timer").textContent = timeCounter; 
+                timeCounter--; 
+
+                if (timeCounter < 0) {  
+                    clearInterval(interval)
+                    document.getElementById("Tim").textContent = "Time's up:"  
+
+                    //get selected radio value
+                    const selected = document.querySelector('input[name="vote"]:checked'); 
+                    const selectedValue = selected ? selected.value : "none"; 
+
+                    //create hidden input to preserve the value and allow post action or submission (always input)
+                    const hiddeninput = document.createElement("input");  
+                    hiddeninput.type = "hidden"; 
+                    hiddeninput.name = "v"; 
+                    hiddeninput.value = selectedValue; 
+                    document.querySelector("form").appendChild(hiddeninput);  
+
+                    const rs = document.createElement("div");  
+                    rs.innerHTML = `<button id="rs" type="button">Show Result</button>`   
+                    document.querySelector("form").appendChild(rs); 
+
+                    document.getElementById("rs").addEventListener("click", function() { 
+                        window.location.href = "/chart"; 
+                    }); 
+
+                    // disbale all radio buttons
+                    const radios = document.querySelectorAll('input[type="radio"]'); 
+                    radios.forEach(radio => radio.disabled = true); 
+
+                    // auto submit the form 
+                    document.getElementById("myform").submit();  //old code
+                }
+            }, 1000)
+        </script>
+    </body>
+</html>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_socketio import SocketIO 
 from flask import abort 
 import random 
@@ -7,6 +7,7 @@ import json
 import time
 
 app = Flask(__name__)
+app.secret_key = '8989dog4040'
 polls = {} 
 
 @app.route('/')
@@ -50,22 +51,38 @@ def join():
 def view_poll(code): 
     return render_template('poll.html', code=polls[code], timer=polls[code]["time"])  
 
-@app.route('/result', methods=['POST']) 
-def chart():  
-    choice_map = {}
-    option = request.form.get('v')
+
+@app.route('/result', methods=['POST'])
+def voters():  
+    option = request.form.get('vote')
+    #make new session if not created yet
+    if 'choice_map' in session: 
+        choice_map = session['choice_map']
+    else:   
+        choice_map = {}
+
     if (option == "none"):  
         choice, selected = None, None
     else:  
-        selected, choice = option.split("&")
+        selected, choice = option.split("&")  
         if choice in choice_map:  
             choice_map[choice] += 1
         else: 
-            choice_map[choice] = 1
-    
+            choice_map[choice] = 1 
+
+    #save updated map back to session 
+    session['choice_map'] = choice_map      #like session['choice_map', variable]  
+    return '', 204                          #return silent/empty response with 204 to avoid invalid response 
+                                            #error and stay on the same page(poll). ideal for using AJAX JS
+
+
+@app.route('/chart') 
+def chart():   
+    choice_map = session['choice_map'] 
     key_choices = list(choice_map.keys())
     nofchoices = list(choice_map.values())
-    return render_template('chart.html', selected=selected, choice=choice, key_choices=key_choices, nofchoices=nofchoices)
+
+    return render_template('chart.html', key_choices=key_choices, nofchoices=nofchoices)
 
 
 if __name__ == '__main__':  

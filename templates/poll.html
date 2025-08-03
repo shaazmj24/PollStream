@@ -95,7 +95,7 @@
 
     </style>
     <body>   
-        <form id="myform" method="POST" action="/result">   
+        <form id="myform">   
             <span id="Tim">Timer: </span>
             <span id="timer">{{ code["time"] }}</span>
             <p id="ques">{{ code["ques"] }}</p>   
@@ -127,20 +127,27 @@
 
                     //get selected radio value
                     const selected = document.querySelector('input[name="vote"]:checked'); 
-                    const selectedValue = selected ? selected.value : "none"; 
-
-                    //create hidden input to preserve the value and allow post action or submission (always input)
-                    const hiddeninput = document.createElement("input");  
-                    hiddeninput.type = "hidden"; 
-                    hiddeninput.name = "v"; 
-                    hiddeninput.value = selectedValue; 
-                    document.querySelector("form").appendChild(hiddeninput);  
+                    const selectedValue = selected ? selected.value : "none";  
 
                     const rs = document.createElement("div");  
-                    rs.innerHTML = `<button id="rs" type="submit">Show Result</button>`   
+                    rs.innerHTML = `<button id="rs" type="button">Show Result</button>`   
                     document.querySelector("form").appendChild(rs); 
+
+                    document.getElementById("rs").addEventListener("click", function() { 
+                        window.location.href = "/chart"; 
+                    }); 
+
+                    // disbale all radio buttons
                     const radios = document.querySelectorAll('input[type="radio"]'); 
                     radios.forEach(radio => radio.disabled = true); 
+
+                    //use AJAX to avoid invalid response error (return not written) 
+                    //send data in the background to flask and either stay on the same page unless result button is clicked or to new page 
+                    fetch('/result', { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },      //tells flask we sendin format 
+                        body: 'vote=' + encodeURIComponent(selectedValue)
+                    })
                 }
             }, 1000)
         </script>
