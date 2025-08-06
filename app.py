@@ -49,15 +49,16 @@ def join():
 
 @app.route('/poll/<code>')
 def view_poll(code): 
-    return render_template('poll.html', code=polls[code], timer=polls[code]["time"])  
+    return render_template('poll.html', code=polls[code], timer=polls[code]["time"], identity=code)  
 
 
 @app.route('/result', methods=['POST'])
 def voters():  
+    identity = request.form.get('identity')
     option = request.form.get('vote')
-    #make new session if not created yet
-    if 'choice_map' in session: 
-        choice_map = session['choice_map']
+    #make new session if not created yet (global variable)
+    if identity in session: 
+        choice_map = session[identity]
     else:   
         choice_map = {}
 
@@ -71,19 +72,27 @@ def voters():
             choice_map[choice] = 1 
 
     #save updated map back to session 
-    session['choice_map'] = choice_map      #like session['choice_map', variable]  
+    session[identity] = choice_map      #like session[#code#, variable]  
     return '', 204                          #return silent/empty response with 204 to avoid invalid response 
                                             #error and stay on the same page(poll). ideal for using AJAX JS
 
 
 @app.route('/chart') 
-def chart():   
-    choice_map = session['choice_map'] 
+def chart(): 
+    identity = request.args.get("id")        #query parameter in url so use args 
+    choice_map = session[identity] 
     key_choices = list(choice_map.keys())
     nofchoices = list(choice_map.values())
 
     return render_template('chart.html', key_choices=key_choices, nofchoices=nofchoices)
 
+@app.route('/livechart', methods=['GET', 'POST'])
+def livechart(): 
+    identity = request.args.get("id") 
+    choice_map = session[identity]
+    key_choices = list(choice_map.keys())
+    nofchoices = list(choice_map.values())
+    return render_template('live.html', key_choices=key_choices, nofchoices=nofchoices)
 
 if __name__ == '__main__':  
     app.run(host='0.0.0.0', port=5001, debug=True)   

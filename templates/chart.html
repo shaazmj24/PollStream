@@ -8,7 +8,7 @@
 <script>
 var xValues = JSON.parse('{{ key_choices | tojson | safe }}'); 
 var yValues = JSON.parse('{{nofchoices | tojson }}'); 
-var barColors = Array(xValues.length).fill("cyan");
+var barColors = Array(xValues.length).fill("fuchsia");
 
 new Chart("myChart", {
   type: "bar",
@@ -24,12 +24,28 @@ new Chart("myChart", {
     title: {
       display: true,
       text: "Vote"
-    }
+    }, 
+    tooltips: {
+      callbacks: {
+        label: function(tooltipItem, data) {
+          var total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+          var currentValue = data.datasets[0].data[tooltipItem.index];
+          var percentage = ((currentValue / total) * 100).toFixed(1);
+          return currentValue + " (" + percentage + "%)";
+        }
+      }
+    },
+    scales: { 
+    yAxes: [{
+        ticks: { 
+            beginAtZero: true, 
+            stepSize: 1, 
+        }
+    }]
   }
+}
 });
 </script>
 
 </body>
 </html>
-
-

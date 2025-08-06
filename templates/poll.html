@@ -114,8 +114,9 @@
                 circle.textContent = letter; 
             });
         </script>
-        <script> 
+        <script>   
             let timeCounter = parseInt(document.getElementById("timer").textContent);   
+            const id = JSON.parse('{{ identity | tojson | safe }}');
 
             const interval = setInterval(function() {   // interval varaibe only if you want to stop countdown so clearInterval(variable)
                 document.getElementById("timer").textContent = timeCounter; 
@@ -134,7 +135,7 @@
                     document.querySelector("form").appendChild(rs); 
 
                     document.getElementById("rs").addEventListener("click", function() { 
-                        window.location.href = "/chart"; 
+                        window.location.href = "/chart?id=" + encodeURIComponent(id); 
                     }); 
 
                     // disbale all radio buttons
@@ -145,9 +146,10 @@
                     //send data in the background to flask and either stay on the same page unless result button is clicked or to new page 
                     fetch('/result', { 
                         method: 'POST', 
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },      //tells flask we sendin format 
-                        body: 'vote=' + encodeURIComponent(selectedValue)
-                    })
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },      //tells flask we sendin html format so it will treat it like a format
+                        body: 'vote=' + encodeURIComponent(selectedValue) + 
+                              '&identity=' + encodeURIComponent(id)
+                    }); 
                 }
             }, 1000)
         </script>

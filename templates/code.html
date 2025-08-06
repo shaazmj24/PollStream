@@ -35,14 +35,24 @@
         color: black
     }
 
-    </style>
-    <body>
-        <form method="POST" action="/livechart"> 
+    </style>  
+    <body> 
+        <form> 
             <h2>CODE: {{ poll_code }}</h2>
             <h3 id="hed3">Guide: Share this code with voters so they can join the poll</h3>
-            <button type="submit">Show LiveChart</button>
-        </form>
+            <button id="live" type="submit">Show LiveChart</button>
+        </form>  
+        <script> 
+            const id = JSON.parse('{{ poll_code | tojson | safe }}'); 
+    
+            document.getElementById("live").addEventListener("click", function(event) {  
+                event.preventDefault(); 
+                window.location.href = "/livechart?id=" + encodeURIComponent(id);   
+            }); 
+        </script> 
     </body>
 </html>
+
+
 
 
