@@ -5,8 +5,25 @@
     </head>
     <body> 
         <h1>Live</h1>
-        {{ key_choices }} 
-        {{ nofchoices }}
+        {{ identity }}
+        <div id="result"></div>
     </body>
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script>
+        const id = JSON.parse('{{ identity | tojson | safe }}'); 
+        const socket = io() //connects to flask-socketIO server 
+
+        // join the specific room . sendin data to server to create privae room
+        socket.emit("join_room", {id: id});  
+
+        //reciever/listen for vote updates
+        socket.on("vote_update", function(data) {     //update . will make live happen
+            const ans = data.choice; 
+            resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = `<h2>${ans}</h2>`;
+        }); 
+
+
+    </script>
 </html>
 

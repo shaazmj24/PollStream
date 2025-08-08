@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_socketio import SocketIO 
 from flask import abort 
+from flask_socketio import emit, join_room, leave_room
 import random 
 import string 
 import json 
@@ -9,6 +10,8 @@ import time
 app = Flask(__name__)
 app.secret_key = '8989dog4040'
 polls = {} 
+socketio = SocketIO(app)       # Creates an instance. Wraps your Flask app with Socket.IO functionality. Enables real-time, bi-directional 
+                               # communication between clients (browser) and your Flask server over WebSockets
 
 @app.route('/')
 def home():   
@@ -76,7 +79,6 @@ def voters():
     return '', 204                          #return silent/empty response with 204 to avoid invalid response 
                                             #error and stay on the same page(poll). ideal for using AJAX JS
 
-
 @app.route('/chart') 
 def chart(): 
     identity = request.args.get("id")        #query parameter in url so use args 
@@ -88,16 +90,25 @@ def chart():
 
 @app.route('/livechart', methods=['GET', 'POST'])
 def livechart(): 
-    identity = request.args.get("id") 
-    choice_map = session[identity]
-    key_choices = list(choice_map.keys())
-    nofchoices = list(choice_map.values())
-    return render_template('live.html', key_choices=key_choices, nofchoices=nofchoices)
+    identity = request.args.get("id")  
+    
+    return render_template('live.html', identity=identity)
+    
+@socketio.on("join_room")
+def on_join(data):  
+    room = data["id"]
+    join_room(room)
+    print(f"Admin joined room: {room}")      #creating private room. servers enter uniqe room will recieve and send data otherwise send to all connected socket clients
+
+@socketio.on("vote_casted") 
+def on_vote(data):    
+    identity = data["id"] 
+    selectedValue = data["choice"]
+
+    emit("vote_update", {"choice": selectedValue}, room=identity)
 
 if __name__ == '__main__':  
-    app.run(host='0.0.0.0', port=5001, debug=True)   
+    socketio.run(app, host='0.0.0.0', port=5001, debug=True)    #instead of app.run() cuz only supports hhtp not websocket.socketio supports both
 
 
 
-
- 

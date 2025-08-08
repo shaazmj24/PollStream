@@ -107,6 +107,10 @@
             </label>  
             {% endfor %} 
         </form>
+        <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+        <script> 
+            const socket = io() //connects to flask-socketIO server
+        </script>
         <script>  
             const circles = document.querySelectorAll('.circle'); 
             circles.forEach((circle, index) => { 
@@ -116,7 +120,18 @@
         </script>
         <script>   
             let timeCounter = parseInt(document.getElementById("timer").textContent);   
-            const id = JSON.parse('{{ identity | tojson | safe }}');
+            const id = JSON.parse('{{ identity | tojson | safe }}'); 
+
+            //real time voting implementation
+            document.querySelectorAll('input[name="vote"]').forEach(radio => 
+                radio.addEventListener("change", function() { 
+                    const selectedValue = this.value; 
+                    socket.emit("vote_casted", {       //sends data to flask server 
+                        id: id, 
+                        choice: selectedValue
+                    })
+                })
+            )
 
             const interval = setInterval(function() {   // interval varaibe only if you want to stop countdown so clearInterval(variable)
                 document.getElementById("timer").textContent = timeCounter; 
@@ -151,6 +166,8 @@
                               '&identity=' + encodeURIComponent(id)
                     }); 
                 }
+
+
             }, 1000)
         </script>
     </body>
