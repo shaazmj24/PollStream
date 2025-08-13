@@ -8,7 +8,7 @@
 <script>
 var xValues = JSON.parse('{{ key_choices | tojson | safe }}'); 
 var yValues = JSON.parse('{{nofchoices | tojson }}'); 
-var barColors = Array(xValues.length).fill("fuchsia");
+var barColors = Array(xValues.length).fill("DodgerBlue");
 
 letterMap = {}
 xValues.forEach((k,i) => {  
