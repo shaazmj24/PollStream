@@ -12,3 +12,4 @@ Chart.js + boostrap
 
 
 
+ipconfig getifaddr en0  on terminal will provide ip of local network
