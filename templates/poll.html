@@ -168,15 +168,6 @@
                     // disbale all radio buttons
                     const radios = document.querySelectorAll('input[type="radio"]'); 
                     radios.forEach(radio => radio.disabled = true); 
-
-                    //use AJAX to avoid invalid response error (return not written) 
-                    //send data in the background to flask and either stay on the same page unless result button is clicked or to new page 
-                    fetch('/result', { 
-                        method: 'POST', 
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },      //tells flask we sendin html format so it will treat it like a format
-                        body: 'vote=' + encodeURIComponent(selectedValue) + 
-                              '&identity=' + encodeURIComponent(id)
-                    }); 
                 }
 
             }, 1000)

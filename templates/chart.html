@@ -10,20 +10,30 @@ var xValues = JSON.parse('{{ key_choices | tojson | safe }}');
 var yValues = JSON.parse('{{nofchoices | tojson }}'); 
 var barColors = Array(xValues.length).fill("fuchsia");
 
+letterMap = {}
+xValues.forEach((k,i) => {  
+    letterMap[k] = i; 
+});
+
+xV = xValues.sort();
+yV = xV.map(k => yValues[letterMap[k]]); 
+
 new Chart("myChart", {
   type: "bar",
   data: {
-    labels: xValues,
+    labels: xV,
     datasets: [{
       backgroundColor: barColors,
-      data: yValues
+      data: yV
     }]
   },
   options: {
     legend: {display: false},
     title: {
       display: true,
-      text: "Vote"
+      text: "Poll Result", 
+      fontSize: 20, 
+      fontColor: 'black'
     }, 
     tooltips: {
       callbacks: {
@@ -40,6 +50,14 @@ new Chart("myChart", {
         ticks: { 
             beginAtZero: true, 
             stepSize: 1, 
+            fontColor: 'black', 
+            fontSize: 22
+        }
+    }],
+    xAxes: [{
+        ticks: { 
+            fontColor: 'black', 
+            fontSize: 22, 
         }
     }]
   }

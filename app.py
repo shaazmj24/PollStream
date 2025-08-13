@@ -57,35 +57,10 @@ def join():
 def view_poll(code): 
     return render_template('poll.html', code=polls[code], timer=polls[code]["time"], identity=code)  
 
-
-@app.route('/result', methods=['POST'])
-def voters():  
-    identity = request.form.get('identity')
-    option = request.form.get('vote')
-    #make new session if not created yet (global variable)
-    if identity in session: 
-        choice_map = session[identity]
-    else:   
-        choice_map = {}
-
-    if (option == "none"):  
-        choice, selected = None, None
-    else:  
-        selected, choice = option.split("&")  
-        if choice in choice_map:  
-            choice_map[choice] += 1
-        else: 
-            choice_map[choice] = 1 
-
-    #save updated map back to session 
-    session[identity] = choice_map      #like session[#code#, variable]  
-    return '', 204                          #return silent/empty response with 204 to avoid invalid response 
-                                            #error and stay on the same page(poll). ideal for using AJAX JS
-
 @app.route('/chart') 
 def chart(): 
     identity = request.args.get("id")        #query parameter in url so use args 
-    choice_map = session[identity] 
+    choice_map = votes[identity] 
     key_choices = list(choice_map.keys())
     nofchoices = list(choice_map.values())
 

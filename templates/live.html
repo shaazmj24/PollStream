@@ -5,8 +5,16 @@
         <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script> 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
+    <style> 
+        #wrappr { 
+            width: 100%;  
+            max-width: 1400px;   /* optional cap */ 
+            height: 100vh;        /* big height; try 70–85vh or a px value like 700px */ 
+            margin: 0 auto;  
+        }
+    </style>
     <body> 
-        <canvas id="livechart" style="width:500%;max-width:2000px"></canvas>
+        <div id="wrappr"><canvas id="livechart"></canvas></div>
         <div id="result"></div>
         <script>
             const id = JSON.parse('{{ identity | tojson | safe }}'); 
@@ -31,18 +39,33 @@
                 options: { 
                     responsive: true, 
                     scales: { 
+                        x: {  
+                            ticks: { 
+                                color: 'black', 
+                                font: { size: 16 }
+                            }, 
+                            title: { 
+                                display: false,
+                            }
+                        }, 
                         y: { 
                             beginAtZero: true, 
                             ticks: { 
                                 precision: 0,        
-                                stepSize: 1           
+                                stepSize: 1, 
+                                color: "black", 
+                                font: { size: 16 }        
                             }, 
                             title: { 
                                 display: true, 
-                                text: 'Votes' 
+                                text: 'Number Of Votes',
+                                color: 'black', 
+                                font: { size: 18, weight: 'bold' }
+
                             } 
                         } 
                     }, 
+
                     plugins: { 
                         legend: { 
                             display: false            
