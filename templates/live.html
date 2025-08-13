@@ -2,28 +2,75 @@
 <html lang="en"> 
     <head> 
         <title>Live</title>
+        <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body> 
-        <h1>Live</h1>
-        {{ identity }}
+        <canvas id="livechart" style="width:500%;max-width:2000px"></canvas>
         <div id="result"></div>
+        <script>
+            const id = JSON.parse('{{ identity | tojson | safe }}'); 
+            const socket = io() //connects to flask-socketIO server 
+    
+            // join the specific room . sendin data to server to create privae room
+            socket.emit("join_room", {id: id});   
+
+             // Set up the chart 
+             const ctx = document.getElementById("livechart").getContext("2d"); 
+             const chart = new Chart(ctx, { 
+                type: "bar", 
+                data: { 
+                    labels: [], 
+                    datasets: [{ 
+                        label: "Votes", 
+                        data: [], 
+                        backgroundColor: "fuchsia",    
+                        borderWidth: 0                 
+                    }] 
+                }, 
+                options: { 
+                    responsive: true, 
+                    scales: { 
+                        y: { 
+                            beginAtZero: true, 
+                            ticks: { 
+                                precision: 0,        
+                                stepSize: 1           
+                            }, 
+                            title: { 
+                                display: true, 
+                                text: 'Votes' 
+                            } 
+                        } 
+                    }, 
+                    plugins: { 
+                        legend: { 
+                            display: false            
+                        } 
+                    } 
+                } 
+            });
+
+        // Listen for vote updates and update the chart
+        socket.on("vote_update", function(data) {  
+            //a map from key to its original index 
+            const letterMap = {} 
+
+            data.keys.forEach((k, i) => {  
+                letterMap[k] = i;    
+            });
+
+            const sortedKeys = data.keys.sort();
+            // Map sorted keys to their corresponding nums 
+            const nums = sortedKeys.map(k => data.nums[letterMap[k]]); 
+                
+                // Update the chart 
+                chart.data.labels = sortedKeys; 
+                chart.data.datasets[0].data = nums; 
+                chart.update();
+            });
+
+        </script>
     </body>
-    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
-    <script>
-        const id = JSON.parse('{{ identity | tojson | safe }}'); 
-        const socket = io() //connects to flask-socketIO server 
-
-        // join the specific room . sendin data to server to create privae room
-        socket.emit("join_room", {id: id});  
-
-        //reciever/listen for vote updates
-        socket.on("vote_update", function(data) {     //update . will make live happen
-            const ans = data.choice; 
-            resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = `<h2>${ans}</h2>`;
-        }); 
-
-
-    </script>
 </html>
 

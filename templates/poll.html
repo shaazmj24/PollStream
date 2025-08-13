@@ -116,11 +116,22 @@
             circles.forEach((circle, index) => { 
                 const letter = String.fromCharCode(65 + index);
                 circle.textContent = letter; 
-            });
+            }); 
         </script>
         <script>   
             let timeCounter = parseInt(document.getElementById("timer").textContent);   
             const id = JSON.parse('{{ identity | tojson | safe }}'); 
+
+            function generateCode() { 
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; 
+                let code = ''; 
+                for (let i = 0; i < 7; i++) { 
+                    code += chars.charAt(Math.floor(Math.random() * chars.length)); 
+                } 
+                return code; 
+            }
+
+            const voteID = generateCode()
 
             //real time voting implementation
             document.querySelectorAll('input[name="vote"]').forEach(radio => 
@@ -128,7 +139,8 @@
                     const selectedValue = this.value; 
                     socket.emit("vote_casted", {       //sends data to flask server 
                         id: id, 
-                        choice: selectedValue
+                        choice: selectedValue,
+                        voter_id: voteID          //reuse the same one. if you write just generateCode(), it will keep generating new code so will think diff voters 
                     })
                 })
             )
@@ -166,7 +178,6 @@
                               '&identity=' + encodeURIComponent(id)
                     }); 
                 }
-
 
             }, 1000)
         </script>

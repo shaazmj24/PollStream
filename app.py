@@ -13,12 +13,15 @@ polls = {}
 socketio = SocketIO(app)       # Creates an instance. Wraps your Flask app with Socket.IO functionality. Enables real-time, bi-directional 
                                # communication between clients (browser) and your Flask server over WebSockets
 
+votes = {}  #lives in server memory not in a browser like session
+voter_previous = {}
+
 @app.route('/')
 def home():   
     return render_template('home.html') 
 
 def generate_code(): 
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))  #k=n returns list of random elements, join combine list into one string. 
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=7))  #k=n returns list of random elements, join combine list into one string. 
                                                                                  #the '' represents something between letter. for e.g '-' then A-1-B-B-3
 
 @app.route('/create', methods=['POST', 'GET']) 
@@ -100,15 +103,47 @@ def on_join(data):
     join_room(room)
     print(f"Admin joined room: {room}")      #creating private room. servers enter uniqe room will recieve and send data otherwise send to all connected socket clients
 
-@socketio.on("vote_casted") 
-def on_vote(data):    
-    identity = data["id"] 
-    selectedValue = data["choice"]
 
-    emit("vote_update", {"choice": selectedValue}, room=identity)
+@socketio.on("vote_casted") 
+def on_vote(data):     
+    voter_id = data["voter_id"]
+    identity = data["id"] 
+    option = data["choice"] 
+    selected, choice = option.split("&") 
+
+    if voter_id in voter_previous: 
+        previous = voter_previous[voter_id]
+    else: 
+        previous = None
+
+    if identity in votes: 
+        choice_map = votes[identity] 
+    else: 
+        choice_map = {} 
+    
+    if choice in choice_map: 
+        if choice != previous: 
+            if previous != None:  
+                choice_map[previous] -= 1
+            previous = choice
+        choice_map[choice] += 1 
+    else: 
+        choice_map[choice] = 1 
+        if previous != None: 
+            choice_map[previous] -= 1 
+        previous = choice
+
+    voter_previous[voter_id] = previous
+    
+    votes[identity] = choice_map 
+    key_choices = list(choice_map.keys())
+    nofchoices = list(choice_map.values())
+
+    emit("vote_update", {"keys": key_choices, "nums": nofchoices}, room=identity)
+
+
 
 if __name__ == '__main__':  
     socketio.run(app, host='0.0.0.0', port=5001, debug=True)    #instead of app.run() cuz only supports hhtp not websocket.socketio supports both
-
 
 
