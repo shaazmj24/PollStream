@@ -3,7 +3,7 @@ body {
     display: flex;
     justify-content: center;
     padding: 40px;
-    background-color: lightblue;
+    background: linear-gradient(135deg, #89cff0, #1e90ff); /* soft-to-bold blue gradient */
   }
   
   form {
@@ -11,7 +11,7 @@ body {
     padding: 25px 30px;
     border-radius: 27px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    width: 550px;
+    width: 850px;
   }
   
   h1 {
@@ -68,23 +68,18 @@ body {
     cursor: pointer;
   }
   
-  button[type="submit"]:hover,
-  button[type="button"]:hover {
-    background-color: lightblue;
-    color: black
-  }
-  
   button[type="button"] {
     margin-top: 10px;
   }
 
   #cp {  
     position: relative;
-    left: 200px; 
+    float: right;
   }
 
   #plus { 
     position: relative;
-    left: 197px;
+    left: 500px;
+    top: -10px;
   }
 

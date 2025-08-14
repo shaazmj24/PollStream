@@ -3,7 +3,7 @@
     <head> 
         <title>Pin</title>
     </head>
-    <style>   
+    <style>               
     body { 
         font-family: Arial, sans-serif;
         display: flex;
@@ -12,28 +12,51 @@
         background-color: white;
     }
 
-    form {  
-        position: relative; 
-        background-color: lightblue; 
-        padding: 25px 30px;
-        border-radius: 27px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        width: 550px;
-        bottom: -250px; 
-    }
+    form { 
+    position: relative;  
+    background-color: white; /* White background */
+    padding: 25px 30px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Soft shadow */
+    border-radius: 12px; /* Smooth rounded corners */
+    width: 800px;  
+    height: 200px; 
+    top: 40px; 
+    font-family: Arial, sans-serif;
+}
 
-    button { 
-        background-color: black;
-        color: white;
-        font-size: 16px;
-        border-radius: 6px;
-        cursor: pointer;
-    }
+/* Code text */
+form h2 {
+    margin: 0;
+    font-size: 35px;
+    font-weight: bold;
+    color: #333;
+}
 
-    button:hover { 
-        background-color: white;
-        color: black
-    }
+/* Guide text */
+form h3 {
+    font-size: 23px;
+    color: dodgerblue;
+}
+
+/* Button style inside form */
+form button {
+    position: relative;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    top: 50px;
+}
+
+form button:hover {
+    background-color: #005bb5;
+}
+
+</style>  
 
     </style>  
     <body> 
