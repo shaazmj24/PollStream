@@ -17,3 +17,6 @@ ipconfig getifaddr en0  on terminal will provide ip of local network
 Port = a “door” number on a computer that programs use to send/receive data.
 My Flask app runs on port 5001, so to access it I use: http://<IP>:5001.
 IP = which computer, Port = which program/service on that computer
+
+
+DEMO: https://www.youtube.com/watch?v=ud_KgoYxi0s 
