@@ -1,0 +1,99 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <title>Live</title>
+        <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <style> 
+        #wrappr { 
+            width: 100%;  
+            max-width: 1400px;   /* optional cap */ 
+            height: 100vh;        /* big height; try 70–85vh or a px value like 700px */ 
+            margin: 0 auto;  
+        }
+    </style>
+    <body> 
+        <div id="wrappr"><canvas id="livechart"></canvas></div>
+        <div id="result"></div>
+        <script>
+            const id = JSON.parse('{{ identity | tojson | safe }}'); 
+            const socket = io() //connects to flask-socketIO server 
+    
+            // join the specific room . sendin data to server to create privae room
+            socket.emit("join_room", {id: id});   
+
+             // Set up the chart 
+             const ctx = document.getElementById("livechart").getContext("2d"); 
+             const chart = new Chart(ctx, { 
+                type: "bar", 
+                data: { 
+                    labels: [], 
+                    datasets: [{ 
+                        label: "Votes", 
+                        data: [], 
+                        backgroundColor: "DodgerBlue",    
+                        borderWidth: 0                 
+                    }] 
+                }, 
+                options: { 
+                    responsive: true, 
+                    scales: { 
+                        x: {  
+                            ticks: { 
+                                color: 'black', 
+                                font: { size: 16 }
+                            }, 
+                            title: { 
+                                display: false,
+                            }
+                        }, 
+                        y: { 
+                            beginAtZero: true, 
+                            ticks: { 
+                                precision: 0,        
+                                stepSize: 1, 
+                                color: "black", 
+                                font: { size: 22 }        
+                            }, 
+                            title: { 
+                                display: true, 
+                                text: 'No. Of Votes',
+                                color: 'black', 
+                                font: { size: 18, weight: 'bold' }
+
+                            } 
+                        } 
+                    }, 
+
+                    plugins: { 
+                        legend: { 
+                            display: false            
+                        } 
+                    } 
+                } 
+            });
+
+        // Listen for vote updates and update the chart
+        socket.on("vote_update", function(data) {  
+            //a map from key to its original index 
+            const letterMap = {} 
+
+            data.keys.forEach((k, i) => {  
+                letterMap[k] = i;    
+            });
+
+            const sortedKeys = data.keys.sort();
+            // Map sorted keys to their corresponding nums 
+            const nums = sortedKeys.map(k => data.nums[letterMap[k]]); 
+                
+                // Update the chart 
+                chart.data.labels = sortedKeys; 
+                chart.data.datasets[0].data = nums; 
+                chart.update();
+            });
+
+        </script>
+    </body>
+</html>
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <title>Home Poll</title>
+        <style>  
+
+        body { 
+            height: 120vh; 
+            margin: 0;
+            display: flex; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+        }   
+
+        #buttons {  
+            position: relative; 
+            margin-top: 170px;
+            display: flex; 
+            gap: 120px; 
+        }
+
+        button { 
+            padding: 12px 40px;  
+            font-size: 23px;   
+            cursor: pointer;
+        }
+
+        #h { 
+            font-family: 'Anton', sans-serif;
+            position: relative;  
+            font-size: 90px; 
+            text-align: center; 
+            margin-top: -400px;
+            text-transform: uppercase;
+            color: dodgerblue;
+
+            /* Makes text appear wider/thicker */
+            -webkit-text-stroke: 7px dodgerblue; /* black outline for thickness */
+            text-shadow: 
+                1px 1px 0px dodgerblue,
+                -1px -1px 0px dodgerblue,
+                1px -1px 0px dodgerblue,
+                -1px 1px 0px dodgerblue;
+        }
+
+        </style>
+    </head>
+    <body> 
+        <h1 id="h">   
+            Poll Stream
+        </h1>
+        <div id="buttons"> 
+            <button onclick="location.href='/create'">Create Poll</button>
+            <button onclick="location.href='/join'">Join Poll</button>
+        </div>
+    </body>
+</html>

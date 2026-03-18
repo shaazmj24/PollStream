@@ -1,0 +1,209 @@
+<!DOCTYPE html> 
+<html lang="eng"> 
+    <head> 
+        <title>Poll Time</title>
+    </head> 
+    <style>    
+
+body { 
+    font-family: Arial, sans-serif; 
+    display: flex; 
+    justify-content: center; 
+    padding: 40px; 
+    background: linear-gradient(135deg, #89cff0, #1e90ff); /* soft-to-bold blue gradient */
+} 
+
+form { 
+    position: relative;  
+    background-color: white; 
+    padding: 25px 30px; 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+    border-radius: 16px; /* smoother corners */
+    width: 1500px;  
+    height: 600px; 
+    top: 40px; 
+} 
+
+button:hover {   
+    background-color: dodgerblue; 
+    color: white;  
+    transform: scale(1.05); /* subtle zoom on hover */
+    transition: all 0.9s ease-in-out;
+} 
+
+/* Radio button custom style */
+input[type="radio"] {
+    display: none; /* hide default */
+}
+
+.circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid dodgerblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 12px;
+    color: dodgerblue;
+    background-color: white;
+    transition: all 0.2s ease;
+} 
+
+input[type="radio"]:checked + .circle {
+    background-color: dodgerblue;
+    color: white;
+    border-color: dodgerblue;
+    box-shadow: 0 0 10px rgba(30,144,255,0.7);
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 22px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.option:hover {
+    background: rgba(30,144,255,0.1);
+}
+
+/* Timer styling */
+#timer {   
+    position: absolute;  
+    right: 20px;
+    top: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+}
+
+#Tim { 
+    position: absolute;  
+    right: 49px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #333;
+} 
+
+/* Show Result button */
+#rs { 
+    position: relative; 
+    background-color: dodgerblue; 
+    color: white; 
+    border: none; 
+    padding: 10px 15px; 
+    font-size: 16px; 
+    border-radius: 6px; 
+    cursor: pointer;
+    float: right;  
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: all 0.2s ease;
+}
+
+#rs:hover {
+    background-color: #005bb5;
+    transform: translateY(-3px);
+}
+
+#ques { 
+    position: relative; 
+    font-size: 40px;     
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 30px;
+}
+
+
+    </style>
+    <body>   
+        <form id="myform">   
+            <span id="Tim">Timer: </span>
+            <span id="timer">{{ code["time"] }}</span>
+            <p id="ques">{{ code["ques"] }}</p>   
+            {% for option in code["options"] %}  
+            <label class="option">    
+                <input type="radio" name="vote" value="{{option}}&{{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[loop.index0] }}"> 
+                <span class="circle"></span>
+                {{ option }} 
+            </label>  
+            {% endfor %} 
+        </form>
+        <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+        <script> 
+            const socket = io() //connects to flask-socketIO server
+        </script>
+        <script>  
+            const circles = document.querySelectorAll('.circle'); 
+            circles.forEach((circle, index) => { 
+                const letter = String.fromCharCode(65 + index);
+                circle.textContent = letter; 
+            }); 
+        </script>
+        <script>   
+            let timeCounter = parseInt(document.getElementById("timer").textContent);   
+            const id = JSON.parse('{{ identity | tojson | safe }}'); 
+
+            function generateCode() { 
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; 
+                let code = ''; 
+                for (let i = 0; i < 7; i++) { 
+                    code += chars.charAt(Math.floor(Math.random() * chars.length)); 
+                } 
+                return code; 
+            }
+
+            const voteID = generateCode()
+
+            //real time voting implementation
+            document.querySelectorAll('input[name="vote"]').forEach(radio => 
+                radio.addEventListener("change", function() { 
+                    const selectedValue = this.value; 
+                    socket.emit("vote_casted", {       //sends data to flask server 
+                        id: id, 
+                        choice: selectedValue,
+                        voter_id: voteID          //reuse the same one. if you write just generateCode(), it will keep generating new code so will think diff voters 
+                    })
+                })
+            )
+
+            const interval = setInterval(function() {   // interval varaibe only if you want to stop countdown so clearInterval(variable)
+                document.getElementById("timer").textContent = timeCounter; 
+                timeCounter--; 
+
+                if (timeCounter < 0) {  
+                    clearInterval(interval)
+                    document.getElementById("Tim").textContent = "Time's up:"  
+
+                    //get selected radio value
+                    const selected = document.querySelector('input[name="vote"]:checked'); 
+                    const selectedValue = selected ? selected.value : "none";  
+
+                    const rs = document.createElement("div");  
+                    rs.innerHTML = `<button id="rs" type="button">Show Result</button>`   
+                    document.querySelector("form").appendChild(rs); 
+
+                    document.getElementById("rs").addEventListener("click", function() { 
+                        window.location.href = "/chart?id=" + encodeURIComponent(id); 
+                    }); 
+
+                    // disbale all radio buttons
+                    const radios = document.querySelectorAll('input[type="radio"]'); 
+                    radios.forEach(radio => radio.disabled = true); 
+                }
+
+            }, 1000)
+        </script>
+    </body>
+</html>
+
+
+
+
+
+

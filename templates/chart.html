@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<body>
+
+<canvas id="myChart" style="width:500%;max-width:2000px"></canvas>
+
+<script>
+var xValues = JSON.parse('{{ key_choices | tojson | safe }}'); 
+var yValues = JSON.parse('{{nofchoices | tojson }}'); 
+var barColors = Array(xValues.length).fill("deepskyblue");
+
+letterMap = {}
+xValues.forEach((k,i) => {  
+    letterMap[k] = i; 
+});
+
+xV = xValues.sort();
+yV = xV.map(k => yValues[letterMap[k]]); 
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xV,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yV
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Poll Result", 
+      fontSize: 20, 
+      fontColor: 'black'
+    }, 
+    tooltips: {
+      callbacks: {
+        label: function(tooltipItem, data) {
+          var total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+          var currentValue = data.datasets[0].data[tooltipItem.index];
+          var percentage = ((currentValue / total) * 100).toFixed(1);
+          return currentValue + " (" + percentage + "%)";
+        }
+      }
+    },
+    scales: { 
+    yAxes: [{
+        ticks: { 
+            beginAtZero: true, 
+            stepSize: 1, 
+            fontColor: 'black', 
+            fontSize: 22
+        }
+    }],
+    xAxes: [{
+        ticks: { 
+            fontColor: 'black', 
+            fontSize: 22, 
+        }
+    }]
+  }
+}
+});
+</script>
+
+</body>
+</html>
+

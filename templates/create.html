@@ -1,0 +1,44 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <title>CreatePoll</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='create1.css') }}">
+    </head>
+    <body>     
+        <form method="POST" action="/create"> 
+            <h1>CREATE POLL</h1>
+            <input id="one" type="text" placeholder="Create Question" name="ques"> 
+            <ul id="options">    
+            </ul> 
+            <input name="time" type="text" placeholder="Timer(seconds)">
+            <div><button id="plus" type="button" onclick="addOption()">+</button> 
+                <button id="cp" type="submit">Create Poll</button>
+            </div>
+        </form>
+        <script> 
+            let count = 0; 
+            function addOption() { 
+                const ul = document.getElementById('options'); 
+                const li = document.createElement('li');
+                const letter = String.fromCharCode(65 + count)
+                li.innerHTML = ` <input type="text" placeholder="${letter}" name="${letter}">  
+                                 <button type="button" onclick="removeOption(this)">x</button> `; 
+                ul.appendChild(li); 
+                count += 1; 
+            }
+
+            function removeOption(button) {  
+                const li = button.parentElement;
+                li.remove(); 
+            }
+        </script>
+    </body>
+</html>
+
+
+
+
+
+
+
+

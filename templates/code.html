@@ -1,0 +1,81 @@
+<!DOCTYPE html> 
+<html lang="en">  
+    <head> 
+        <title>Pin</title>
+    </head>
+    <style>               
+    body { 
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 40px;
+        background-color: white;
+    }
+
+    form { 
+    position: relative;  
+    background-color: white; /* White background */
+    padding: 25px 30px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Soft shadow */
+    border-radius: 12px; /* Smooth rounded corners */
+    width: 800px;  
+    height: 200px; 
+    top: 40px; 
+    font-family: Arial, sans-serif;
+}
+
+/* Code text */
+form h2 {
+    margin: 0;
+    font-size: 35px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Guide text */
+form h3 {
+    font-size: 23px;
+    color: dodgerblue;
+}
+
+/* Button style inside form */
+form button {
+    position: relative;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    top: 50px;
+}
+
+form button:hover {
+    background-color: #005bb5;
+}
+
+</style>  
+
+    </style>  
+    <body> 
+        <form> 
+            <h2>CODE: {{ poll_code }}</h2>
+            <h3 id="hed3">Guide: Share this code with voters so they can join the poll</h3>
+            <button id="live" type="submit">Show LiveChart</button>
+        </form>  
+        <script> 
+            const id = JSON.parse('{{ poll_code | tojson | safe }}'); 
+    
+            document.getElementById("live").addEventListener("click", function(event) {  
+                event.preventDefault(); 
+                window.location.href = "/livechart?id=" + encodeURIComponent(id);   
+            }); 
+        </script> 
+    </body>
+</html>
+
+
+
+
